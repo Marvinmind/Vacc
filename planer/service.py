@@ -1,6 +1,6 @@
 __author__ = 'martin'
 from enum import Enum
-from datetime import timedelta
+from datetime import timedelta, date
 
 class Schedule(Enum):
 	regular = 0
@@ -11,12 +11,8 @@ class Schedule(Enum):
 	greaterEighteenY = 5
 
 def checkTetanusStatus():
-	base = False
 	eventList = getEventList()
-	baseOffsetsDict = getBaseImmuOffsets()
-	status = 0
 	count = 1
-	previousEventDate = getDateOfBirth()
 	#set schedule
 	if not eventList:
 		#set schedule directly according to age
@@ -78,10 +74,26 @@ class Suggestion():
 				self.minDate = dateOfBirth + timedelta(month=11)
 				self.maxDate = dateOfBirth + timedelta(month=14)
 
-			if len(eventList) > 4:
-				lastEvent = eventList[-1:]
+			if len(eventList) == 4:
+				self.type == 'Refresh'
+				self.minDate = dateOfBirth + timedelta(years=5)
+				self.minDate = dateOfBirth + timedelta(years=6)
 
-		elif schedule == regular
+			if len(eventList) > 5:
+				self.type == 'Refresh'
+				self.minDate = eventList[-1].date + timedelta(years=10)
+
+
+		elif schedule == Schedule.smaller12m:
+			if len(eventList) == 0:
+				self.type == 'BaseImmu'
+				self.minDate == date.today()
+				self.maxDate == date.today()
+			if len(eventList) in [1,2]:
+				self.type == 'BaseImmu'
+				self.minDate == eventList[-1:].date + timedelta(month=1)
+				self.maxDate == eventList[-1:].date + timedelta(month=2)
+
 
 
 
