@@ -10,8 +10,11 @@ class Schedule(Enum):
 	ElevenYToEighteenY = 4
 	greaterEighteenY = 5
 
-def checkTetanusStatus():
-	eventList = getEventList()
+class VaccType(Enum):
+	BaseVacc = 0;
+	RefreshVacc = 1
+
+def checkTetanusStatus(eventList, dateOfBirth):
 	count = 1
 	#set schedule
 	if not eventList:
@@ -56,6 +59,7 @@ def checkTetanusStatus():
 
 class Suggestion():
 	def __init__(self, dateOfBirth, schedule, eventList):
+		lastEventDate = eventList[-1:].date
 		if schedule == Schedule.regular:
 			if len(eventList) == 0:
 				self.type = 'BaseImmu'
@@ -87,15 +91,125 @@ class Suggestion():
 		elif schedule == Schedule.smaller12m:
 			if len(eventList) == 0:
 				self.type == 'BaseImmu'
-				self.minDate == date.today()
-				self.maxDate == date.today()
-			if len(eventList) in [1,2]:
+				self.minDate = date.today()
+				self.maxDate = date.today()
+			elif len(eventList) in [1, 2]:
 				self.type == 'BaseImmu'
-				self.minDate == eventList[-1:].date + timedelta(month=1)
-				self.maxDate == eventList[-1:].date + timedelta(month=2)
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 4:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(year=5)
+				self.maxDate = lastEventDate + timedelta(year=8)
+			elif len(eventList) > 5:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(year=10)
+				self.maxDate = lastEventDate + timedelata(year=11)
+
+		elif schedule == Schedule.TwelveMToFiveY:
+			if len(eventList) == 0:
+				self.type = VaccType.BaseVacc
+				self.minDate = date.today()
+				self.maxDate = date.today()
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 2:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=6)
+				self.minDate = lastEventDate + timedelta(month=7)
+			elif len(eventList) in [3, 4]:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=5)
+				self.minDate = lastEventDate + timedelta(years=10)
+			elif len(eventList) >= 5:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=10)
+				self.minDate = lastEventDate + timedelta(years=11)
+		elif schedule == Schedule.FiveYTo11Y:
+			if len(eventList) == 0:
+				self.type = VaccType.BaseVacc
+				self.minDate = date.today()
+				self.maxDate = date.today()
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 2:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=6)
+				self.minDate = lastEventDate + timedelta(month=7)
+			elif len(eventList) == 3:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=5)
+				self.maxDate = lastEventDate + timedelta(years=6)
+			elif len(eventList) >= 4:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=10)
+				self.minDate = lastEventDate + timedelta(years=11)
+		elif schedule == Schedule.ElevenYToEighteenY:
+			if len(eventList) == 0:
+				self.type = VaccType.BaseVacc
+				self.minDate = date.today()
+				self.maxDate = date.today()
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 2:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=6)
+				self.minDate = lastEventDate + timedelta(month=7)
+			elif len(eventList) == 3:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=5)
+				self.maxDate = lastEventDate + timedelta(years=10)
+			elif len(eventList) >= 4:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=10)
+				self.maxDate = lastEventDate + timedelta(years=11)
+		elif schedule == Schedule.greaterEighteenY:
+			if len(eventList) == 0:
+				self.type = VaccType.BaseVacc
+				self.minDate = date.today()
+				self.maxDate = date.today()
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 1:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=1)
+				self.maxDate = lastEventDate + timedelta(month=2)
+			elif len(eventList) == 2:
+				self.type = VaccType.BaseVacc
+				self.minDate = lastEventDate + timedelta(month=6)
+				self.minDate = lastEventDate + timedelta(month=7)
+			elif len(eventList) >=3:
+				self.type = VaccType.RefreshVacc
+				self.minDate = lastEventDate + timedelta(years=10)
+				self.maxDate = lastEventDate + timedelta(years=11)
+
+	def __str__(self):
+		return 'Your next Vaccination should be between %s and %s' % (self.minDate, self.maxDate)
 
 
-
+def getAgeAtEvent(dateOfBirth, event):
+	eventDate = event.date
+	distance = event.date - dateOfBirth
 
 
 
